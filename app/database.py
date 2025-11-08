@@ -1,4 +1,3 @@
-# "postgresql+asyncpg://nima:secret123@db:5432/mydb"
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 import os
