@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/code:delegated
+    ports:
+      - "50000:8000"            # host:container (open FastAPI to host)
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://nima:secret123@db:5432/mydb
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
+      - redis
+
+  consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: python app/events/consumers.py
+    volumes:
+      - .:/code:delegated
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - redis
+      - db
+    restart: on-failure
+
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: nima
+      POSTGRES_PASSWORD: secret123
+      POSTGRES_DB: mydb
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    restart: always
+    # no host port mapping required for internal-only access
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
