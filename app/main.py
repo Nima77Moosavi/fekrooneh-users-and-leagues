@@ -3,7 +3,9 @@ from fastapi import FastAPI, APIRouter
 app = FastAPI()
 
 router = APIRouter()
-@app.include_router(router)
+
+# Correct usage: call include_router, not decorate
+app.include_router(router)
 
 @app.get("/")
 async def health():
