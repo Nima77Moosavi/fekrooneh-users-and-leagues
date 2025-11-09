@@ -6,3 +6,4 @@ sqlalchemy
 databases
 pydantic
 alembic
+psycopg[binary]
