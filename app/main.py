@@ -12,3 +12,6 @@ app.include_router(users_router)
 @app.get("/")
 async def health():
     return {"status": "ok"}
+
+
+# DATABASE_URL="postgresql://root:ILhYnWTG49nujSM26sSkBMMH@fekrooneh-db:5432/postgres" alembic upgrade head
