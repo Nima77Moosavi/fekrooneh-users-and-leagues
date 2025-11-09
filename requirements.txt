@@ -7,3 +7,4 @@ databases
 pydantic
 alembic
 psycopg[binary]
+psycopg2-binary
