@@ -4,8 +4,8 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool, create_engine
 from alembic import context
 
-from app.users import models as user_models  # import so Alembic sees them
 from app.database import Base
+from app.users.models import User  # noqa: F401
 
 # Alembic Config object, provides access to values within alembic.ini
 config = context.config
